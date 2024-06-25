@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 
-from models.schemas import Message, userSchema
+from .schemas import Message, UserPublic, UserSchema
 
 app = FastAPI()
 
@@ -11,8 +11,9 @@ def read_root():
     return {"message": "Olá Mundo!"}
 
 
-@app.post("/users/")
-def create_user(user: userSchema): ...
+@app.post("/users/", response_model=UserPublic)
+def create_user(user: UserSchema):
+    return user
 
 
 @app.get("/html", status_code=200, response_class=HTMLResponse)

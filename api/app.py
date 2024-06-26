@@ -1,19 +1,26 @@
+from http import HTTPStatus
+
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 
-from .schemas import Message, UserPublic, UserSchema
+from .schemas import Message, UserPublic, UserSchema, userDB
 
 app = FastAPI()
 
+# mock database
+databases: list = []
 
-@app.get("/", status_code=200, response_model=Message)
+
+@app.get("/", status_code=HTTPStatus.OK, response_model=Message)
 def read_root():
     return {"message": "Olá Mundo!"}
 
 
-@app.post("/users/", response_model=UserPublic)
+@app.post("/users/", status_code=HTTPStatus.CREATED, response_model=UserPublic)
 def create_user(user: UserSchema):
-    return user
+    user_with_id = userDB(id=len(databases) + 1, **user.model_dump())
+    databases.append(user_with_id)
+    return user_with_id
 
 
 @app.get("/html", status_code=200, response_class=HTMLResponse)

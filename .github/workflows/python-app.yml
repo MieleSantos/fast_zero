@@ -19,7 +19,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install Python
         uses: actions/setup-python@v4
-      
       - name: Install poetry
         uses: abatilo/actions-poetry@v2
       - name: Setup a local virtual environment (if no poetry.toml file)
@@ -33,6 +32,8 @@ jobs:
           key: venv-${{ hashFiles('poetry.lock') }}
       - name: Install the project dependencies
         run: poetry install
-      - name: Run the automated tests (for example)
+      - name: Run format codigo
+        run: poetry run ruff check . --fix; ruff format .
+      - name: Run the automated tests 
         run: poetry run pytest -v
      

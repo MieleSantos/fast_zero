@@ -34,6 +34,5 @@ jobs:
       - name: Install the project dependencies
         run: poetry install
       - name: Run the automated tests (for example)
-        run: poetry shell
-      - name: Run the automated tests (for example)
-        run: task test
+        run: poetry run pytest -v
+     
